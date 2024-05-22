@@ -119,7 +119,7 @@ ref: [Jupyter Notebook(ipynb)の実質コードのみをgitリポジトリ管理
 
 Run:
 ```bash
-git config --local filter.clean_ipynb.clean 'jq --indent 1 --monochrome-output ". + if .metadata.git.suppress_outputs | not then { cells: [.cells[] | . + if .cell_type == \"code\" then { outputs: [], execution_count: null } else {} end ] } else {} end"'
+git config --local filter.clean_ipynb.clean 'jupyter nbconvert --stdin --stdout --clear-output'
 git config --local filter.clean_ipynb.smudge cat
 
 echo '*.ipynb  filter=clean_ipynb' >> .git/info/attributes
@@ -309,7 +309,7 @@ ref: [Jupyter Notebook(ipynb)の実質コードのみをgitリポジトリ管理
 
 Run:
 ```bash
-git config --local filter.clean_ipynb.clean 'jq --indent 1 --monochrome-output ". + if .metadata.git.suppress_outputs | not then { cells: [.cells[] | . + if .cell_type == \"code\" then { outputs: [], execution_count: null } else {} end ] } else {} end"'
+git config --local filter.clean_ipynb.clean 'jupyter nbconvert --stdin --stdout --clear-output'
 git config --local filter.clean_ipynb.smudge cat
 
 echo '*.ipynb  filter=clean_ipynb' >> .git/info/attributes
