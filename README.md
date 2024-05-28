@@ -6,7 +6,7 @@ The following tools are assumed to be installed and configured:
 
 - [Git](https://git-scm.com/)
 - [GitHub-cli](https://cli.github.com/)
-- [Rye](https://rye-up.com/)
+- [Rye](https://rye.astral.sh/)
 
 Replace `my_project` with the name of the project, `amano-takahisa` with your GitHub username.
 
