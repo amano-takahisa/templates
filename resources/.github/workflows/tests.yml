@@ -1,0 +1,44 @@
+---
+name: Lint and Test
+
+"on":
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 1 * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rye
+        run: |
+          curl -sSf https://rye.astral.sh/get | RYE_INSTALL_OPTION="--yes" bash
+
+      - name: Append Rye to PATH
+        shell: bash
+        run: echo "$HOME/.rye/shims" >> "$GITHUB_PATH"
+
+      - name: Pin python-version ${{ matrix.python-version }}
+        run: rye pin ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          rye sync --no-dev --features=test
+
+      - name: Lint
+        run: |
+          rye run pre-commit run --all-files
+
+      - name: Pytest
+        run: |
+          rye run pytest
